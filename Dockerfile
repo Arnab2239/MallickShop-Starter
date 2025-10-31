@@ -20,7 +20,7 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV PORT=3000
 
-RUN mkdir public
+RUN mkdir /app/public
 RUN echo "placeholder" > public/.gitkeep
 
 
