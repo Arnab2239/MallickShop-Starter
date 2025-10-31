@@ -4,12 +4,14 @@ WORKDIR /app
 
 # Copy only the dependency files first for better caching
 COPY package*.json ./
-RUN npm install --save-dev @types/bcryptjs
 
+RUN npm install --save-dev @types/bcryptjs
+RUN  npm install swr
 
 # Copy the entire project and build
 COPY . .
 RUN npm run build
+
 
 # ---- Run Stage ----
 FROM node:20-alpine AS runner
