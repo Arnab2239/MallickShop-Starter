@@ -9,3 +9,12 @@ let cached = globalThis as any
 if (!cached.mongoose) {
   cached.mongoose = { conn: null, promise: null }
 }
+
+export async function connectDB() {
+  if (cached.mongoose.conn) return cached.mongoose.conn
+  if (!cached.mongoose.promise) {
+    cached.mongoose.promise = mongoose.connect(MONGODB_URI).then(m => m)
+  }
+  cached.mongoose.conn = await cached.mongoose.promise
+  return cached.mongoose.conn
+}
