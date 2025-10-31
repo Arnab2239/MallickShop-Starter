@@ -4,7 +4,8 @@ WORKDIR /app
 
 # Copy only the dependency files first for better caching
 COPY package*.json ./
-RUN npm install
+RUN npm install --save-dev @types/bcryptjs
+
 
 # Copy the entire project and build
 COPY . .
