@@ -1,23 +1,39 @@
-version: '3.8'
+# Stage 1: Build the Next.js App
+FROM node:20-alpine AS builder
 
-services:
-  mongo:
-    image: mongo:6
-    restart: unless-stopped
-    volumes:
-      - mongo-data:/data/db
-    ports:
-      - 27017:27017
+# Set working directory
+WORKDIR /app
 
-  web:
-    build: .
-    ports:
-      - 3000:3000
-    environment:
-      - MONGODB_URI=mongodb://mongo:27017/mallickshop
-      - JWT_SECRET=supersecret_change
-    depends_on:
-      - mongo
+# Copy dependency files
+COPY package*.json ./
 
-volumes:
-  mongo-data:
+# Install dependencies
+RUN npm install
+
+# Copy all project files
+COPY . .
+
+# Build the Next.js app
+RUN npm run build
+
+# Stage 2: Run Production App
+FROM node:20-alpine AS runner
+
+WORKDIR /app
+
+# Copy only necessary files from builder
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/node_modules ./node_modules
+
+# Set environment variables
+ENV NODE_ENV=production
+ENV PORT=3000
+ENV MONGODB_URI=mongodb://mongo:27017/mallickshop
+ENV JWT_SECRET=supersecret_change
+
+EXPOSE 3000
+
+# Start the application
+CMD ["npm", "start"]
