@@ -10,7 +10,7 @@ COPY package*.json ./
 # Install dependencies
 RUN npm install --save-dev @types/bcryptjs
 RUN npm install swr
-
+RUN mkdir -p /app/public
 
 # Copy all project files
 COPY . .
