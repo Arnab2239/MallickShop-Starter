@@ -7,6 +7,7 @@ COPY package*.json ./
 
 RUN npm install --save-dev @types/bcryptjs
 RUN  npm install swr
+RUN mkdir -p /app/public
 
 # Copy the entire project and build
 COPY . .
@@ -20,8 +21,7 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV PORT=3000
 
-RUN mkdir /app/public
-RUN echo "placeholder" > public/.gitkeep
+
 
 
 # Copy necessary files from builder
