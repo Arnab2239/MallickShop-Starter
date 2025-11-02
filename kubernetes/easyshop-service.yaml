@@ -10,16 +10,4 @@ spec:
       targetPort: 3000
       nodePort: 30000
   selector:
-    app: apiVersion: v1
-kind: Service
-metadata:
-  name: mallickshop-service
-  namespace: mallickshop
-spec:
-  type: NodePort
-  ports:
-    - port: 80
-      targetPort: 3000
-      nodePort: 30000
-  selector:
     app: mallickshop
