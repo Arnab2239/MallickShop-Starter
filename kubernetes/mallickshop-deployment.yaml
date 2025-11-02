@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: mallickshop
-          image: arnab23/easyshop-app:latest
+          image: arnab23/mallicksho-app:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
