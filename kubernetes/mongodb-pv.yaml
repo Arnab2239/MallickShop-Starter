@@ -1,6 +1,7 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
+  namespace : mallickshop
   name: mongodb-pv
 spec:
   capacity:
