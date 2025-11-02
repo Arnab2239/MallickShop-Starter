@@ -4,12 +4,14 @@
 FROM node:20-alpine
 
 WORKDIR /app
+RUN apk add --no-cache python3 make g++
 
 # Copy only what's necessary
-COPY package.json ./
+COPY package*.json tsconfig.json ./
+
 RUN npm install
+RUN npm install --save-dev @types/mongoose
 RUN npm install swr
-RUN npm install --save-dev @types/bcryptjs
 
 # Copy all project files
 COPY . .
