@@ -10,10 +10,10 @@ metadata:
 spec:
   tls:
   - hosts:
-    - mallickshop.52.48.146.106.nip.io
+    - mallickshop.34.252.25.181.nip.io
     secretName: mallickshop-tls-secret  # Cert-Manager will manage this
   rules:
-  - host: mallickshop.52.48.146.106.nip.io
+  - host: mallickshop.34.252.25.181.nip.io
     http:
       paths:
       - path: /
