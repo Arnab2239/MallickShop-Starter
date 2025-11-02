@@ -12,5 +12,5 @@ spec:
         imagePullPolicy: Always
         env:
         - name: MONGODB_URI
-          value: "mongodb://mongodb-service:27017/mallicksho"
+          value: "mongodb://mongodb-service:27017/mallickshop"
       restartPolicy: OnFailure
