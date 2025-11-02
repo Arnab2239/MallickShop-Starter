@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: mallickshop
+  labels:
+    name: mallickshop
+    environment: production
