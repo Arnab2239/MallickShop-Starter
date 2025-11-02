@@ -22,9 +22,7 @@ COPY . .
 RUN npm run build
 
 # Copy migration or seed scripts
-COPY ./scripts ./scripts
-COPY ./models ./models
-COPY ./config ./config
+
 
 # Environment variables (better passed from runtime)
 ENV NODE_ENV=production
