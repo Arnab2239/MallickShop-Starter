@@ -1,28 +1,42 @@
-# ---- Build Stage ----
+# ----------------------------
+# Stage 1: Build the Next.js App
+# ----------------------------
 FROM node:20-alpine AS builder
+
 WORKDIR /app
 
-# Copy only the dependency files first for better caching
+# Copy dependency files
 COPY package*.json ./
 
-RUN npm install --save-dev @types/bcryptjs
-RUN  npm install swr
-RUN mkdir -p /app/public
+# Install dependencies using clean install
+RUN npm ci
 
-# Copy the entire project and build
+# Copy all files
 COPY . .
+
+# Build the Next.js app
 RUN npm run build
 
-
-# ---- Run Stage ----
+# ----------------------------
+# Stage 2: Run Production App
+# ----------------------------
 FROM node:20-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
 ENV PORT=3000
 
+# Copy build output and essentials from builder
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/next.config.js ./
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/node_modules ./node_modules
 
+EXPOSE 3000
 
+# Start Next.js in production mode
+CMD ["npm", "start"]
 
 # Copy necessary files from builder
 COPY --from=builder /app/package.json ./
