@@ -6,7 +6,7 @@ FROM node:20-alpine AS builder
 WORKDIR /app
 
 # Copy dependency files
-COPY package*.json ./
+COPY package.json ./
 
 # Install dependencies using clean install
 RUN npm install
