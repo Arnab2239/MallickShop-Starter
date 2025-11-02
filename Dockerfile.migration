@@ -1,41 +1,23 @@
-# Stage 1: Build the Next.js App
-FROM node:20-alpine AS builder
+# ----------------------------
+# Dockerfile.migration
+# ----------------------------
+FROM node:20-alpine
 
-# Set working directory
 WORKDIR /app
 
-# Copy dependency files
+# Copy only what's necessary
 COPY package*.json ./
+RUN npm ci
 
-# Install dependencies
-RUN npm install --save-dev @types/bcryptjs
-RUN npm install swr
-RUN mkdir -p /app/public
+# Copy migration or seed scripts
+COPY ./scripts ./scripts
+COPY ./models ./models
+COPY ./config ./config
 
-# Copy all project files
-COPY . .
-
-# Build the Next.js app
-RUN npm run build
-
-# Stage 2: Run Production App
-FROM node:20-alpine AS runner
-
-WORKDIR /app
-
-# Copy only necessary files from builder
-COPY --from=builder /app/package*.json ./
-COPY --from=builder /app/.next ./.next
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/node_modules ./node_modules
-
-# Set environment variables
+# Environment variables (better passed from runtime)
 ENV NODE_ENV=production
-ENV PORT=3000
-ENV MONGODB_URI=mongodb://mongo:27017/mallickshop
-ENV JWT_SECRET=supersecret_change
+ENV MONGODB_URI=mongodb://mongodb-service:27017/mallickshop
 
-EXPOSE 3000
+# Default command to run migrations
+CMD ["node", "scripts/migrate.js"]
 
-# Start the application
-CMD ["npm", "start"]
